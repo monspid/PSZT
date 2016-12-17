@@ -26,6 +26,7 @@ class Formula:
 	def __init_code(self):
 		code = self.__formula
 		for key in self.__variables:
+			# change normal variables to the variables which were init in __init_variables
 			code = re.sub(r'\b%s\b' % key, 'dict[\'' + key + '\']', code)
 		return parser.expr(code).compile()
 
@@ -40,7 +41,8 @@ class Formula:
 
 f = Formula(input('Formula:'))
 dict = f.get_variables()
-dict['x'] = 100
+for x in dict.keys():
+	dict[x]  = 100
 f.set_variables(dict)
 print(f.get_variables())
 print(f.get_result())
