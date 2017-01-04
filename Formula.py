@@ -32,7 +32,7 @@ class Formula:
 		return parser.expr(code).compile()
 
 	def get_variables(self):
-		return self.__variables
+		return copy.deepcopy(self.__variables)
 
 	def set_variables(self, new_variables):
 		self.__variables = copy.deepcopy(new_variables)
@@ -40,9 +40,9 @@ class Formula:
 	def get_result(self):
 		return eval(self.__code)
 
-f = Formula(input('Formula:'))
-temp = dict()
-temp = copy.deepcopy(f.get_variables())
+f = Formula(input('Formula: '))
+
+temp = f.get_variables()
 
 print(f.get_variables())
 
@@ -60,4 +60,5 @@ for x in temp.keys():
 print('temp ', temp)
 print(f.get_variables())
 print(f.get_result())
+
 
