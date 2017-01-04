@@ -17,18 +17,18 @@ class Formula:
 		return self.__str__()
 
 	def __init_variables(self):
-		dict = {}
+		lista = list()
 		code = parser.expr(self.__formula).compile()
 		for var in code.co_names:
 			 if(var not in dir(math)):
-			 	dict[var] = 0.0
-		return dict
+			 	lista.append(var)
+		return lista
 
 	def __init_code(self):
 		code = self.__formula
 		for key in self.__variables:
 			# change normal variables to the variables which were init in __init_variables
-			code = re.sub(r'\b%s\b' % key, 'self.get_variables()[\'' + key + '\']', code)
+			code = re.sub(r'\b%s\b' % key, 'dictionary[\'' + key + '\']', code)
 		return parser.expr(code).compile()
 
 	def get_variables(self):
@@ -37,5 +37,5 @@ class Formula:
 	def set_variables(self, new_variables):
 		self.__variables = copy.deepcopy(new_variables)
 
-	def get_result(self):
+	def get_result(self, dictionary):
 		return eval(self.__code)
