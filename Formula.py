@@ -2,6 +2,7 @@ import math
 from math import * 
 import parser
 import re
+import copy
 
 class Formula:
 	def __init__(self, f):
@@ -27,22 +28,36 @@ class Formula:
 		code = self.__formula
 		for key in self.__variables:
 			# change normal variables to the variables which were init in __init_variables
-			code = re.sub(r'\b%s\b' % key, 'dict[\'' + key + '\']', code)
+			code = re.sub(r'\b%s\b' % key, 'self.get_variables()[\'' + key + '\']', code)
 		return parser.expr(code).compile()
 
 	def get_variables(self):
 		return self.__variables
 
 	def set_variables(self, new_variables):
-		self.__variables = new_variables
+		self.__variables = copy.deepcopy(new_variables)
 
 	def get_result(self):
 		return eval(self.__code)
 
 f = Formula(input('Formula:'))
-dict = f.get_variables()
-for x in dict.keys():
-	dict[x]  = 100
-f.set_variables(dict)
+temp = dict()
+temp = copy.deepcopy(f.get_variables())
+
+print(f.get_variables())
+
+for x in temp.keys():
+	temp[x]  = 3.14
+
+f.set_variables(temp)
+print('temp ', temp)
 print(f.get_variables())
 print(f.get_result())
+
+for x in temp.keys():
+	temp[x]  = 1.57
+
+print('temp ', temp)
+print(f.get_variables())
+print(f.get_result())
+
