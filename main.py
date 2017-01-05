@@ -42,6 +42,6 @@ while(union[0].get_value() < 1000 * 1000 * 1000):
 	# wybór nowej populacji 
 	union = population + children
 	union = sorted(union, key =  Individual.get_value, reverse = True)
-	population = union[:10]
+	population = union[:size]
 	print(population[0])
 
