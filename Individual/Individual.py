@@ -1,11 +1,39 @@
 import copy
 import random
+import math
 
-class Individual:
-	def __init__(self, arguments, distributions):
-		self.__arguments = arguments.copy()
-		self.__distributions = distributions.copy()
-		self.__value = 0.0
+class WrongNumberOfArguments(Exception):
+	pass
+
+class Individual():
+	def __init__(self, *args):
+		# arg[0] = formula
+		if(len(args) == 1):
+			self.__formula = args[0]
+			tempDict = dict.fromkeys(self.__formula.get_variables())
+			self.__arguments = tempDict.copy()
+			self.__distributions = tempDict.copy()
+			self.randomize()
+			self.value = self.set_value()
+		
+		# args[0] = iA, args[1] = iB
+		elif(len(args) == 2):
+			tempSelf = self.cross(args[0], args[1])
+			self.__formula = tempSelf.get_formula()
+			self.__arguments = tempSelf.get_arguments()
+			self.__distributions  = tempSelf.get_distributions()
+			self.value = self.set_value()
+
+
+		# args[0] = F, args[1] = arguments, args[2] = distribution
+		elif(len(args) == 3):
+			self.__formula = args[0]
+			self.__arguments = args[1]
+			self.__distributions  = args[2]
+			self.value = self.set_value()
+
+		else:
+			raise WrongNumberOfArguments('Individual() has wrong number of args')
 
 	def __str__(self):
 		return "arguments: {}\ndistributions: {}\nvalue: {}\n".format(self.__arguments, self.__distributions, self.__value)
@@ -37,5 +65,46 @@ class Individual:
 	def get_value(self):
 		return self.__value
 
-	def set_value(self, new_value):
-		self.__value = new_value
+	def set_value(self):
+		self.__value = self.__formula.get_result(self.__arguments)
+
+	def get_formula(self):
+		return self.__formula
+
+	def cross(self, iA, iB):
+		if(iA.get_formula() != iA.get_formula()):
+			raise ValueError("Individual() Individuals have another function")
+		# krzyzowanie argumentow
+		temp_a = iA.get_arguments()
+		temp_b = iB.get_arguments()
+		keys = temp_a.keys()
+
+		args = (dict.fromkeys(keys)).copy()
+		dist = (dict.fromkeys(keys)).copy()
+
+		for x in keys:
+			args[x] = (temp_a[x] + temp_b[x]) / 2
+		
+		# krzyzowanie rozkladow
+		temp_a = iA.get_distributions()
+		temp_b = iB.get_distributions()
+		for x in keys:
+			dist[x] = (temp_a[x] + temp_b[x]) / 2
+
+		return Individual(iA.get_formula(), args, dist)
+
+	def mutation(self):
+		n = len(self.__arguments)
+
+		xi = random.gauss(0, 1)
+
+		tauPrime = 1 / math.sqrt(2 * n)
+		tau = 1 / math.sqrt(2 * math.sqrt(n))
+
+		for key in self.__arguments:
+			xi_i =  random.gauss(0, 1)
+			self.__arguments[key] = self.__arguments[key] * math.exp(tauPrime * xi + tau * xi_i)
+
+		for key in self.__distributions:
+			v_i =  random.gauss(0, 1)
+			self.__distributions[key] = self.__distributions[key] + self.__arguments[key] * v_i

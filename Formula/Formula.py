@@ -4,7 +4,7 @@ import parser
 import re
 import copy
 
-class Formula:
+class Formula():
 	def __init__(self, f):
 		self.__formula = f
 		self.__variables = self.__init_variables()
