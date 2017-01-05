@@ -17,7 +17,7 @@ class Individual():
 			# self.__value = 0.0
 			self.__set_value()
 		
-		# args[0] = iA, args[1] = iB
+		# args[0] = individualA, args[1] = individualB
 		elif(len(args) == 2):
 			tempSelf = self.cross(args[0], args[1])
 			self.__formula = tempSelf.get_formula()
@@ -107,6 +107,5 @@ class Individual():
 			xi_i =  random.gauss(0, 1)
 			self.__arguments[key] = self.__arguments[key] * math.exp(tauPrime * xi + tau * xi_i)
 
-		for key in self.__distributions:
 			v_i =  random.gauss(0, 1)
 			self.__distributions[key] = self.__distributions[key] + self.__arguments[key] * v_i

@@ -9,16 +9,7 @@ size = 10
 
 f = Formula(input('Formula: '))
 
-# slownik do tworzenia osobnikow
-temp = dict.fromkeys(f.get_variables())
-
-for x in temp.keys():
-	temp[x] = 2
-
-print('temp ', temp)
-print(f.get_result(temp))
-
-#tworze populacje
+# tworze populacje
 population = list()
 children = list()
 
@@ -31,11 +22,11 @@ population = sorted(population, key = Individual.get_value, reverse = True)
 
 union = population
 
-while(union[0].get_value() < 1000 * 1000 * 1000):
+while(1):
 	# generacja potomstwa z losowych osobników
-	for i in range(0, size):
-		a = random.randrange(0, size)
-		b = random.randrange(0, size)	
+	for i in range(size):
+		a = random.randrange(size)
+		b = random.randrange(size)	
 		children[i] = Individual(population[a], population[b]) # crossing
 		children[i].mutation()
 

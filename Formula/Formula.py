@@ -1,7 +1,6 @@
 import math
 from math import * 
 import parser
-import re
 import copy
 
 class Formula():
