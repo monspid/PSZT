@@ -5,7 +5,7 @@ import random
 import copy
 
 # rozmiar populacji
-size = 10
+size = 1000
 
 f = Formula(input('Formula: '))
 
@@ -14,13 +14,15 @@ population = list()
 children = list()
 
 # generacja populacji początkowej
-for i in range(0, size):
+for i in range(size):
 	children.append(Individual(f))
 	population.append(Individual(f))
 
 population = sorted(population, key = Individual.get_value, reverse = True)
 
 union = population
+
+number = 0
 
 while(1):
 	# generacja potomstwa z losowych osobników
@@ -34,5 +36,8 @@ while(1):
 	union = population + children
 	union = sorted(union, key =  Individual.get_value, reverse = True)
 	population = union[:size]
+	
+	print('population ' + str(number) + '\n')
 	print(population[0])
 
+	number += 1

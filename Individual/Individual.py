@@ -77,21 +77,28 @@ class Individual():
 		if(individualA.get_formula() != individualB.get_formula()):
 			raise ValueError("Individual() Individuals have another function")
 		
-		tempIndividualA = individualA.get_arguments()
-		tempIndividualB = individualB.get_arguments()
-		keys = tempIndividualA.keys()
+		argumentsA = individualA.get_arguments()
+		argumentsB = individualB.get_arguments()
+
+		distributionsA = individualA.get_distributions()
+		distributionsB = individualB.get_distributions()
+
+		keys = argumentsA.keys()
 
 		args = (dict.fromkeys(keys)).copy()
 		dist = (dict.fromkeys(keys)).copy()
 
+
 		for x in keys:
-			args[x] = (tempIndividualA[x] + tempIndividualB[x]) / 2
-		
-		# krzyzowanie rozkladow
-		tempIndividualA = individualA.get_distributions()
-		tempIndividualB = individualB.get_distributions()
-		for x in keys:
-			dist[x] = (tempIndividualA[x] + tempIndividualB[x]) / 2
+			args[x] = (argumentsA[x] + argumentsB[x]) / 2
+			dist[x] = (distributionsA[x] + distributionsB[x]) / 2
+
+		#-------------------------Interpolation------------------------------#
+
+		#a = random.uniform(0, 1)
+		#for x in keys:
+			#args[x] = (a * argumentsA[x] + (1 - a) * argumentsB[x])
+			#dist[x] = (a * distributionsA[x] + (1 - a) * distributionsB[x])
 
 		return Individual(individualA.get_formula(), args, dist)
 
