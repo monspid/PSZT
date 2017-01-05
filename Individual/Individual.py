@@ -2,13 +2,13 @@ import copy
 import random
 
 class Individual:
-	def __init__(self, args, dist):
-		self.__arguments = args.copy()
-		self.__distributions = dist.copy()
+	def __init__(self, arguments, distributions):
+		self.__arguments = arguments.copy()
+		self.__distributions = distributions.copy()
 		self.__value = 0.0
 
 	def __str__(self):
-		return "arguments: {}\n distributions: {}\n value: {}\n".format(self.__arguments, self.__distributions, self.__value)
+		return "arguments: {}\ndistributions: {}\nvalue: {}\n".format(self.__arguments, self.__distributions, self.__value)
 
 	def __repr__(self):
 		return self.__str__()
@@ -23,7 +23,7 @@ class Individual:
 			self.__distributions[x] = random.uniform(-5, 5)
 
 	def get_arguments(self):
-		return copy.deepcopy(self.__arguments)
+		return self.__arguments.copy()
 	
 	def set_arguments(self, new_variables):
 		self.__variables = new_variables.copy()

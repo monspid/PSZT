@@ -3,6 +3,7 @@ from Individual.Individual import Individual
 from operator import attrgetter
 import random
 import copy
+import math
 
 def cross(a, b):
 	# krzyzowanie argumentow
@@ -24,6 +25,27 @@ def cross(a, b):
 
 	return Individual(args, dist)
 
+def mutation(embryo):
+	args = embryo.get_arguments()
+	dist = embryo.get_distributions()
+
+	n = len(args)
+
+	xi = random.gauss(0, 1)
+
+	tauPrime = 1 / math.sqrt(2 * n)
+	tau = 1 / math.sqrt(2 * math.sqrt(n))
+
+	for key in args:
+		xi_i =  random.gauss(0, 1)
+		args[key] = args[key] * math.exp(tauPrime * xi + tau * xi_i)
+
+	for key in dist:
+		v_i =  random.gauss(0, 1)
+		dist[key] = dist[key] + args[key] * v_i
+	embryo.set_arguments(args)
+	embryo.set_distributions(dist)
+
 # rozmiar populacji
 size = 10
 
@@ -43,7 +65,7 @@ population = list();
 children = list();
 
 # generacja populacji początkowej
-for i in range(0,size):
+for i in range(0, size):
 	children.append(Individual(temp, temp))
 	population.append(Individual(temp, temp))
 	population[i].randomize()
@@ -54,18 +76,17 @@ population.sort(key = attrgetter('_Individual__value'), reverse = True)
 # generacja potomstwa z losowych osobników
 for i in range(0, size):
 	a = random.randrange(0, size)
-	b = random.randrange(0, size)
-	#a = 0
-	#b = i
+	b = random.randrange(0, size)	
 	children[i] = cross(population[a], population[b])
+	mutation(children[i])
 
 # obliczenie wartosci funkcji celu dla potomstwa
-for i in range(0,size):
+for i in range(0, size):
 	children[i].set_value(f.get_result(children[i].get_arguments()))
 
 # wybór nowej populacji 
-suma = population + children
-suma.sort(key = attrgetter('_Individual__value'), reverse = True)
+union = population + children
+union.sort(key = attrgetter('_Individual__value'), reverse = True)
 
-for x in suma:
+for x in union:
 	print(x)
