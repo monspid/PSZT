@@ -27,18 +27,21 @@ for i in range(0, size):
 	children.append(Individual(f))
 	population.append(Individual(f))
 
-population.sort(key = attrgetter('_Individual__value'), reverse = True)
+population = sorted(population, key = Individual.get_value, reverse = True)
 
-# generacja potomstwa z losowych osobników
-for i in range(0, size):
-	a = random.randrange(0, size)
-	b = random.randrange(0, size)	
-	children[i] = Individual(population[a], population[b]) # crossing
-	children[i].mutation()
+union = population
 
-# wybór nowej populacji 
-union = population + children
-union.sort(key = attrgetter('_Individual__value'), reverse = True)
+while(union[0].get_value() < 1000 * 1000 * 1000):
+	# generacja potomstwa z losowych osobników
+	for i in range(0, size):
+		a = random.randrange(0, size)
+		b = random.randrange(0, size)	
+		children[i] = Individual(population[a], population[b]) # crossing
+		children[i].mutation()
 
-for x in union:
-	print(x)
+	# wybór nowej populacji 
+	union = population + children
+	union = sorted(union, key =  Individual.get_value, reverse = True)
+	population = union[:10]
+	print(population[0])
+
