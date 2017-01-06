@@ -3,6 +3,7 @@ from Individual.Individual import Individual
 from operator import attrgetter
 import random
 import copy
+import matplotlib.pyplot as plt
 
 # rozmiar populacji
 size = 1000
@@ -22,7 +23,15 @@ population = sorted(population, key = Individual.get_value, reverse = True)
 
 union = population
 
+
+theBestResult = list()
+populationNumber = list()
 number = 0
+
+plt.xlabel('Population Number')
+plt.ylabel('The best result')
+plt.ion()
+plt.show()
 
 while(1):
 	# generacja potomstwa z losowych osobników
@@ -36,8 +45,13 @@ while(1):
 	union = population + children
 	union = sorted(union, key =  Individual.get_value, reverse = True)
 	population = union[:size]
-	
-	print('population ' + str(number) + '\n')
-	print(population[0])
 
+	populationNumber.append(number)
+	theBestResult.append(population[0].get_value())
 	number += 1
+
+	#print(population[0])
+	print(population[0].get_value())
+	plt.plot(populationNumber, theBestResult)
+	plt.draw()
+	plt.pause(0.000000001)
