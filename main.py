@@ -47,11 +47,11 @@ while(1):
 	population = union[:size]
 
 	populationNumber.append(number)
-	theBestResult.append(population[0].get_value())
+	theBestResult.append(round(population[0].get_value(), 4))
 	number += 1
 
 	#print(population[0])
-	print(population[0].get_value())
+	print(round(population[0].get_value(), 4))
 	plt.plot(populationNumber, theBestResult)
 	plt.draw()
 	plt.pause(0.000000001)

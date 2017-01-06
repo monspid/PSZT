@@ -19,20 +19,7 @@ class Individual():
 		
 		# args[0] = individualA, args[1] = individualB
 		elif(len(args) == 2):
-			tempSelf = self.cross(args[0], args[1])
-			self.__formula = tempSelf.get_formula()
-			self.__arguments = tempSelf.get_arguments()
-			self.__distributions  = tempSelf.get_distributions()
-			# self.__value = 0.0
-			self.__set_value()
-
-		# args[0] = formula, args[1] = arguments, args[2] = distribution
-		elif(len(args) == 3):
-			self.__formula = args[0]
-			self.__arguments = args[1]
-			self.__distributions  = args[2]
-			# self.__value = 0.0
-			self.__set_value()
+			self.cross(args[0], args[1])
 
 		else:
 			raise WrongNumberOfArguments('Individual() has wrong number of args')
@@ -85,13 +72,13 @@ class Individual():
 
 		keys = argumentsA.keys()
 
-		args = (dict.fromkeys(keys)).copy()
-		dist = (dict.fromkeys(keys)).copy()
+		arguments = (dict.fromkeys(keys)).copy()
+		distributions = (dict.fromkeys(keys)).copy()
 
 
 		for x in keys:
-			args[x] = (argumentsA[x] + argumentsB[x]) / 2
-			dist[x] = (distributionsA[x] + distributionsB[x]) / 2
+			arguments[x] = (argumentsA[x] + argumentsB[x]) / 2
+			distributions[x] = (distributionsA[x] + distributionsB[x]) / 2
 
 		#-------------------------Interpolation------------------------------#
 
@@ -99,8 +86,12 @@ class Individual():
 		#for x in keys:
 			#args[x] = (a * argumentsA[x] + (1 - a) * argumentsB[x])
 			#dist[x] = (a * distributionsA[x] + (1 - a) * distributionsB[x])
+		self.__formula = individualA.get_formula()
+		self.__arguments = arguments.copy()
+		self.__distributions  = distributions.copy()
+		# self.__value = 0.0
+		self.__set_value()
 
-		return Individual(individualA.get_formula(), args, dist)
 
 	def mutation(self):
 		n = len(self.__arguments)
