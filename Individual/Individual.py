@@ -33,7 +33,7 @@ class Individual():
 	def randomize(self):
 		for x in self.__arguments.keys():
 			self.__arguments[x] = random.uniform(-100, 100)
-			self.__distributions[x] = random.uniform(50, 150)
+			self.__distributions[x] = random.uniform(25, 100)
 
 	def get_arguments(self):
 		return self.__arguments.copy()
