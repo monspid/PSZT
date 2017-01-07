@@ -6,23 +6,21 @@ import copy
 import matplotlib.pyplot as plt
 
 # rozmiar populacji
-size = 1000
+size = 50
 
 f = Formula(input('Formula: '))
 
 # tworze populacje
 population = list()
-children = list()
+children = [None] * size
 
 # generacja populacji początkowej
 for i in range(size):
-	children.append(Individual(f))
 	population.append(Individual(f))
 
 population = sorted(population, key = Individual.get_value, reverse = True)
 
 union = population
-
 
 theBestResult = list()
 populationNumber = list()
@@ -39,6 +37,7 @@ while(1):
 		a = random.randrange(size)
 		b = random.randrange(size)	
 		children[i] = Individual(population[a], population[b]) # crossing
+		#children[i] = copy.deepcopy(population[i]) # mutation only
 		children[i].mutation()
 
 	# wybór nowej populacji 
@@ -47,11 +46,17 @@ while(1):
 	population = union[:size]
 
 	populationNumber.append(number)
+	
 	theBestResult.append(round(population[0].get_value(), 4))
 	number += 1
+
+	if number == 200:
+		break
 
 	#print(population[0])
 	print(round(population[0].get_value(), 4))
 	plt.plot(populationNumber, theBestResult)
 	plt.draw()
 	plt.pause(0.000000001)
+
+#print(population)

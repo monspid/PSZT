@@ -15,7 +15,7 @@ class Individual():
 			self.__distributions = tempDict.copy()
 			self.randomize()
 			# self.__value = 0.0
-			self.__set_value()
+			self.set_value()
 		
 		# args[0] = individualA, args[1] = individualB
 		elif(len(args) == 2):
@@ -33,28 +33,24 @@ class Individual():
 	def randomize(self):
 		for x in self.__arguments.keys():
 			self.__arguments[x] = random.uniform(-100, 100)
-			self.__distributions[x] = random.uniform(-5, 5)
-
-	def __init_distributions(self):
-		for x in self.__distributions.keys():
-			self.__distributions[x] = random.uniform(-5, 5)
+			self.__distributions[x] = random.uniform(50, 150)
 
 	def get_arguments(self):
 		return self.__arguments.copy()
 	
-	def set_arguments(self, new_variables):
-		self.__variables = new_variables.copy()
+#       def set_arguments(self, new_variables):
+#		self.__variables = new_variables.copy()
 
 	def get_distributions(self):
 		return self.__distributions.copy()
 
-	def set_distributions(self, new_variables):
-		self.__distributions = new_variables.copy()
+#	def set_distributions(self, new_variables):
+#	        self.__distributions = new_variables.copy()
 
 	def get_value(self):
 		return self.__value
 
-	def __set_value(self):
+	def set_value(self):
 		self.__value = self.__formula.get_result(self.__arguments)
 
 	def get_formula(self):
@@ -90,7 +86,7 @@ class Individual():
 		self.__arguments = arguments.copy()
 		self.__distributions  = distributions.copy()
 		# self.__value = 0.0
-		self.__set_value()
+		self.set_value()
 
 
 	def mutation(self):
@@ -103,7 +99,7 @@ class Individual():
 
 		for key in self.__arguments:
 			xi_i =  random.gauss(0, 1)
-			self.__arguments[key] = self.__arguments[key] * math.exp(tauPrime * xi + tau * xi_i)
+			self.__distributions[key] = self.__distributions[key] * math.exp(tauPrime * xi + tau * xi_i)
 
 			v_i =  random.gauss(0, 1)
-			self.__distributions[key] = self.__distributions[key] + self.__arguments[key] * v_i
+			self.__arguments[key] = self.__arguments[key] + self.__distributions[key] * v_i
