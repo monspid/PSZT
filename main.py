@@ -27,6 +27,17 @@ _suma = 0.0
 # rozmiar populacji
 size = 50
 
+
+maximizing = input('Type in "min" to look for the minimum (any other input will result in looking for maximum):\n')
+
+if maximizing == 'min':
+    maximizing = False
+    print('Looking for minimum.\n')
+else:
+    maximizing = True
+    print('Looking for maximum.\n')
+
+
 f = Formula(input('Formula: '))
 
 # tworze populacje
@@ -40,7 +51,7 @@ used = [0] * 2 * size
 for i in range(size):
 	population.append(Individual(f))
 
-population = sorted(population, key = Individual.get_value, reverse = True)
+population = sorted(population, key = Individual.get_value, reverse = maximizing)
 
 union = population
 
@@ -57,16 +68,16 @@ while(1):
 	# generacja potomstwa z losowych osobników
 	for i in range(size):
 		a = random.randrange(size)
-		b = random.randrange(size)	
+		b = random.randrange(size)
 		children[i] = Individual(population[a], population[b]) # crossing
 		#children[i] = copy.deepcopy(population[i]) # mutation only
 		children[i].mutation()
 
-	# wybór nowej populacji 
+	# wybór nowej populacji
 	union = population + children
-	union = sorted(union, key =  Individual.get_value, reverse = True)
+	union = sorted(union, key =  Individual.get_value, reverse = maximizing)
 	population = union[:size]
-	
+
 ###############
 	'''
         # ruletka
@@ -105,12 +116,12 @@ while(1):
 	#print(values)
 	#print(ruletka)
 
-	
+
 	population = sorted(population, key =  Individual.get_value, reverse = True)
 '''
 #######################
 	populationNumber.append(number)
-	
+
 	theBestResult.append(round(population[0].get_value(), 4))
 	number += 1
 
