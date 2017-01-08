@@ -5,6 +5,7 @@ import random
 import copy
 import matplotlib.pyplot as plt
 import math
+import operator
 
 
 def odchylenie(values, srednia):
@@ -29,7 +30,9 @@ size = 50
 tournametSize = 10
 
 #maximizing = input('Type in "min" to look for the minimum (any other input will result in looking for maximum): ')
-maximizing = True
+
+maximizing = True # delete me after tests
+
 if maximizing == 'min':
     maximizing = False
     print('Looking for minimum.\n')
@@ -50,10 +53,6 @@ used = [0] * 2 * size
 for i in range(size):
     population.append(Individual(f))
 
-population = sorted(population, key = Individual.get_value, reverse = maximizing)
-
-union = population
-
 theBestResult = list()
 populationNumber = list()
 number = 0
@@ -73,23 +72,19 @@ while(1):
         children[i].mutation()
 
     # wybór nowej populacji
-    union = population + children
-    
-    union = population + children    
+    union = population + children 
     population = list()
     
-    union = sorted(union, key =  Individual.get_value, reverse = True)
-    population.append(union[0])
-    union.pop(0)
+    # mam nadzieje, że ten max dziala
+    uber = max(union, key = Individual.get_value)
+    population.append(uber)
+    union.remove(uber)
 
     while(len(population) != size):
         tournament = random.sample(union, tournametSize)
-        tournament = sorted(tournament, key = Individual.get_value, reverse = True)
-        population.append(tournament[0])
-        union.remove(tournament[0])
-
-    population = sorted(population, key =  Individual.get_value, reverse = True)
-
+        winner = max(tournament, key = Individual.get_value)
+        population.append(winner)
+        union.remove(winner)
 
 ################
     # top
@@ -133,11 +128,11 @@ while(1):
 #######################
     populationNumber.append(number)
 
-    theBestResult.append(round(population[0].get_value(), 4))
+    #theBestResult.append(round(population[0].get_value(), 4))
     number += 1
 
-    #if number == 1000:
-    #    break
+    if number == 1000:
+        break
 
     print('number: {} \n{}'.format(number, population[0]))
     #print(round(population[0].get_value(), 4))

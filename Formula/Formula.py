@@ -18,7 +18,7 @@ class Formula():
 		varList = list()
 		code = parser.expr(self.__formula).compile()
 		for var in code.co_names:
-			 if(var not in dir(math)):
+			 if(var not in dir(math) and var != 'abs'):
 			 	varList.append(var)
 		return varList
 

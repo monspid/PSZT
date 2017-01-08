@@ -82,10 +82,11 @@ class Individual():
         for x in keys:
             arguments[x] = (a * argumentsA[x] + (1 - a) * argumentsB[x])
             distributions[x] = (a * distributionsA[x] + (1 - a) * distributionsB[x])
+
         self.__formula = individualA.get_formula()
         self.__arguments = arguments.copy()
         self.__distributions  = distributions.copy()
-        # self.__value = 0.0
+
         self.set_value()
 
 
@@ -103,3 +104,5 @@ class Individual():
 
             v_i =  random.gauss(0, 1)
             self.__arguments[key] = self.__arguments[key] + self.__distributions[key] * v_i
+
+        self.set_value()
