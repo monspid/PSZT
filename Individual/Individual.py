@@ -3,103 +3,103 @@ import random
 import math
 
 class WrongNumberOfArguments(Exception):
-	pass
+    pass
 
 class Individual():
-	def __init__(self, *args):
-		# arg[0] = formula
-		if(len(args) == 1):
-			self.__formula = args[0]
-			tempDict = dict.fromkeys(self.__formula.get_variables())
-			self.__arguments = tempDict.copy()
-			self.__distributions = tempDict.copy()
-			self.randomize()
-			# self.__value = 0.0
-			self.set_value()
-		
-		# args[0] = individualA, args[1] = individualB
-		elif(len(args) == 2):
-			self.cross(args[0], args[1])
+    def __init__(self, *args):
+        # arg[0] = formula
+        if(len(args) == 1):
+            self.__formula = args[0]
+            tempDict = dict.fromkeys(self.__formula.get_variables())
+            self.__arguments = tempDict.copy()
+            self.__distributions = tempDict.copy()
+            self.randomize()
+            # self.__value = 0.0
+            self.set_value()
+        
+        # args[0] = individualA, args[1] = individualB
+        elif(len(args) == 2):
+            self.cross(args[0], args[1])
 
-		else:
-			raise WrongNumberOfArguments('Individual() has wrong number of args')
+        else:
+            raise WrongNumberOfArguments('Individual() has wrong number of args')
 
-	def __str__(self):
-		return "arguments: {}\ndistributions: {}\nvalue: {}\n".format(self.__arguments, self.__distributions, self.__value)
+    def __str__(self):
+        return "arguments: {}\ndistributions: {}\nvalue: {}\n".format(self.__arguments, self.__distributions, self.__value)
 
-	def __repr__(self):
-		return self.__str__()
+    def __repr__(self):
+        return self.__str__()
 
-	def randomize(self):
-		for x in self.__arguments.keys():
-			self.__arguments[x] = random.uniform(-100, 100)
-			self.__distributions[x] = random.uniform(25, 100)
+    def randomize(self):
+        for x in self.__arguments.keys():
+            self.__arguments[x] = random.uniform(-100, 100)
+            self.__distributions[x] = random.uniform(25, 100)
 
-	def get_arguments(self):
-		return self.__arguments.copy()
-	
-#       def set_arguments(self, new_variables):
-#		self.__variables = new_variables.copy()
+    def get_arguments(self):
+        return self.__arguments.copy()
+    
+    #def set_arguments(self, new_variables):
+    #self.__variables = new_variables.copy()
 
-	def get_distributions(self):
-		return self.__distributions.copy()
+    def get_distributions(self):
+        return self.__distributions.copy()
 
-#	def set_distributions(self, new_variables):
-#	        self.__distributions = new_variables.copy()
+    #def set_distributions(self, new_variables):
+    #self.__distributions = new_variables.copy()
 
-	def get_value(self):
-		return self.__value
+    def get_value(self):
+        return self.__value
 
-	def set_value(self):
-		self.__value = self.__formula.get_result(self.__arguments)
+    def set_value(self):
+        self.__value = self.__formula.get_result(self.__arguments)
 
-	def get_formula(self):
-		return self.__formula
+    def get_formula(self):
+        return self.__formula
 
-	def cross(self, individualA, individualB):
-		if(individualA.get_formula() != individualB.get_formula()):
-			raise ValueError("Individual() Individuals have another function")
-		
-		argumentsA = individualA.get_arguments()
-		argumentsB = individualB.get_arguments()
+    def cross(self, individualA, individualB):
+        if(individualA.get_formula() != individualB.get_formula()):
+            raise ValueError("Individual() Individuals have another function")
+        
+        argumentsA = individualA.get_arguments()
+        argumentsB = individualB.get_arguments()
 
-		distributionsA = individualA.get_distributions()
-		distributionsB = individualB.get_distributions()
+        distributionsA = individualA.get_distributions()
+        distributionsB = individualB.get_distributions()
 
-		keys = argumentsA.keys()
+        keys = argumentsA.keys()
 
-		arguments = (dict.fromkeys(keys)).copy()
-		distributions = (dict.fromkeys(keys)).copy()
-
-
-		for x in keys:
-			arguments[x] = (argumentsA[x] + argumentsB[x]) / 2
-			distributions[x] = (distributionsA[x] + distributionsB[x]) / 2
-
-		#-------------------------Interpolation------------------------------#
-
-		#a = random.uniform(0, 1)
-		#for x in keys:
-			#args[x] = (a * argumentsA[x] + (1 - a) * argumentsB[x])
-			#dist[x] = (a * distributionsA[x] + (1 - a) * distributionsB[x])
-		self.__formula = individualA.get_formula()
-		self.__arguments = arguments.copy()
-		self.__distributions  = distributions.copy()
-		# self.__value = 0.0
-		self.set_value()
+        arguments = (dict.fromkeys(keys)).copy()
+        distributions = (dict.fromkeys(keys)).copy()
 
 
-	def mutation(self):
-		n = len(self.__arguments)
+        #for x in keys:
+        #    arguments[x] = (argumentsA[x] + argumentsB[x]) / 2
+        #    distributions[x] = (distributionsA[x] + distributionsB[x]) / 2
 
-		xi = random.gauss(0, 1)
+        #-------------------------Interpolation------------------------------#
 
-		tauPrime = 1 / math.sqrt(2 * n)
-		tau = 1 / math.sqrt(2 * math.sqrt(n))
+        a = random.uniform(0, 1)
+        for x in keys:
+            arguments[x] = (a * argumentsA[x] + (1 - a) * argumentsB[x])
+            distributions[x] = (a * distributionsA[x] + (1 - a) * distributionsB[x])
+        self.__formula = individualA.get_formula()
+        self.__arguments = arguments.copy()
+        self.__distributions  = distributions.copy()
+        # self.__value = 0.0
+        self.set_value()
 
-		for key in self.__arguments:
-			xi_i =  random.gauss(0, 1)
-			self.__distributions[key] = self.__distributions[key] * math.exp(tauPrime * xi + tau * xi_i)
 
-			v_i =  random.gauss(0, 1)
-			self.__arguments[key] = self.__arguments[key] + self.__distributions[key] * v_i
+    def mutation(self):
+        n = len(self.__arguments)
+
+        xi = random.gauss(0, 1)
+
+        tauPrime = 1 / math.sqrt(2 * n)
+        tau = 1 / math.sqrt(2 * math.sqrt(n))
+
+        for key in self.__arguments:
+            xi_i =  random.gauss(0, 1)
+            self.__distributions[key] = self.__distributions[key] * math.exp(tauPrime * xi + tau * xi_i)
+
+            v_i =  random.gauss(0, 1)
+            self.__arguments[key] = self.__arguments[key] + self.__distributions[key] * v_i
