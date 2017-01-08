@@ -26,17 +26,16 @@ _suma = 0.0
 
 # rozmiar populacji
 size = 50
+tournametSize = 10
 
-
-maximizing = input('Type in "min" to look for the minimum (any other input will result in looking for maximum):\n')
-
+#maximizing = input('Type in "min" to look for the minimum (any other input will result in looking for maximum): ')
+maximizing = True
 if maximizing == 'min':
     maximizing = False
     print('Looking for minimum.\n')
 else:
     maximizing = True
     print('Looking for maximum.\n')
-
 
 f = Formula(input('Formula: '))
 
@@ -65,7 +64,6 @@ plt.ion()
 plt.show()
 
 while(1):
-<<<<<<< HEAD
     # generacja potomstwa z losowych osobników
     for i in range(size):
         a = random.randrange(size)
@@ -76,22 +74,27 @@ while(1):
 
     # wybór nowej populacji
     union = population + children
-    union = sorted(union, key =  Individual.get_value, reverse = maximizing)
-    population = union[:size]
-=======
-	# generacja potomstwa z losowych osobników
-	for i in range(size):
-		a = random.randrange(size)
-		b = random.randrange(size)
-		children[i] = Individual(population[a], population[b]) # crossing
-		#children[i] = copy.deepcopy(population[i]) # mutation only
-		children[i].mutation()
+    
+    union = population + children    
+    population = list()
+    
+    union = sorted(union, key =  Individual.get_value, reverse = True)
+    population.append(union[0])
+    union.pop(0)
 
-	# wybór nowej populacji
-	union = population + children
-	union = sorted(union, key =  Individual.get_value, reverse = maximizing)
-	population = union[:size]
->>>>>>> origin/master
+    while(len(population) != size):
+        tournament = random.sample(union, tournametSize)
+        tournament = sorted(tournament, key = Individual.get_value, reverse = True)
+        population.append(tournament[0])
+        union.remove(tournament[0])
+
+    population = sorted(population, key =  Individual.get_value, reverse = True)
+
+
+################
+    # top
+    #union = sorted(union, key =  Individual.get_value, reverse = maximizing)
+    #population = union[:size]
 
 ###############
     '''
@@ -105,7 +108,6 @@ while(1):
         temp = math.exp((values[i] - _srednia) / _odchylenie)
         values[i] = temp
         # generacja ruletki
-<<<<<<< HEAD
     temp = 0.0
     for i in range(2 * size - 1, -1, -1):
         temp += values[i]
@@ -133,44 +135,11 @@ while(1):
 
     theBestResult.append(round(population[0].get_value(), 4))
     number += 1
-=======
-	temp = 0.0
-	for i in range(2 * size - 1, -1, -1):
-		temp += values[i]
-		ruletka[i] = temp
 
-	population[0] = union[0]
-	max = ruletka[1]
-	min = ruletka[2 * size - 1]
-	used = [0] * 2 * size
-	for i in range(1, size):
-		a = random.uniform(min, max)
-		#print(a)
-		for j in range(1, 2 * size):
-			if ruletka[j] < a:
-				if used[j-1] == 0:
-					used[j-1] = 1
-					break
-		population[i] = union[j - 1]
-		#print(population[i])
+    #if number == 1000:
+    #    break
 
-	#print(values)
-	#print(ruletka)
-
-
-	population = sorted(population, key =  Individual.get_value, reverse = True)
-'''
-#######################
-	populationNumber.append(number)
-
-	theBestResult.append(round(population[0].get_value(), 4))
-	number += 1
->>>>>>> origin/master
-
-    if number == 1000:
-        break
-
-    #print(population[0])
+    print('number: {} \n{}'.format(number, population[0]))
     #print(round(population[0].get_value(), 4))
     #plt.plot(populationNumber, theBestResult)
     #plt.draw()
