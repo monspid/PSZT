@@ -37,15 +37,9 @@ class Individual():
 
     def get_arguments(self):
         return self.__arguments.copy()
-    
-    #def set_arguments(self, new_variables):
-    #self.__variables = new_variables.copy()
 
     def get_distributions(self):
         return self.__distributions.copy()
-
-    #def set_distributions(self, new_variables):
-    #self.__distributions = new_variables.copy()
 
     def get_value(self):
         return self.__value
@@ -70,13 +64,6 @@ class Individual():
 
         arguments = (dict.fromkeys(keys)).copy()
         distributions = (dict.fromkeys(keys)).copy()
-
-
-        #for x in keys:
-        #    arguments[x] = (argumentsA[x] + argumentsB[x]) / 2
-        #    distributions[x] = (distributionsA[x] + distributionsB[x]) / 2
-
-        #-------------------------Interpolation------------------------------#
 
         a = random.uniform(0, 1)
         for x in keys:
