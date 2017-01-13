@@ -3,6 +3,9 @@ from math import *
 import parser
 import copy
 
+class MathError(Exception):
+    pass
+
 class Formula():
 	def __init__(self, f):
 		self.__formula = f

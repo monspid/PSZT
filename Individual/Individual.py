@@ -7,14 +7,10 @@ class WrongNumberOfArguments(Exception):
 
 class Individual():
     def __init__(self, *args):
-        # arg[0] = formula
+        # args[0] = formula
         if(len(args) == 1):
             self.__formula = args[0]
-            tempDict = dict.fromkeys(self.__formula.get_variables())
-            self.__arguments = tempDict.copy()
-            self.__distributions = tempDict.copy()
             self.randomize()
-            # self.__value = 0.0
             self.set_value()
         
         # args[0] = individualA, args[1] = individualB
@@ -31,9 +27,12 @@ class Individual():
         return self.__str__()
 
     def randomize(self):
+        tempDict = dict.fromkeys(self.__formula.get_variables())
+        self.__arguments = tempDict.copy()
+        self.__distributions = tempDict.copy()
         for x in self.__arguments.keys():
             self.__arguments[x] = random.uniform(-100, 100)
-            self.__distributions[x] = random.uniform(25, 100)
+            self.__distributions[x] = random.uniform(25, 200)
 
     def get_arguments(self):
         return self.__arguments.copy()
