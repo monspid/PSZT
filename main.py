@@ -31,10 +31,10 @@ for i in range(size):
     population.append(Individual(f))
 
 theBestResult = list()
-populationNumber = list()
+iteration = list()
 number = 0
 
-plt.xlabel('Population Number')
+plt.xlabel('Iteration')
 plt.ylabel('The best result')
 plt.ion()
 
@@ -66,14 +66,24 @@ while(number < maxNumber and population[0].get_value() != math.inf and populatio
         union.remove(winner)
 
 
-    print('number: {} \n{}'.format(number, population[0]))
+    uber = population[0].get_value()
     
-    if(number % 100 == 0):
-        plt.plot(populationNumber, theBestResult)
+    if uber == math.inf:
+        uber = 10E307
+    elif uber == -math.inf:
+        uber = -10E307
+
+    theBestResult.append(round(uber, 4))
+    iteration.append(number)
+    
+    print('number: {} \n{}'.format(number, population[0]))
+
+    if(number % 10 == 0):
+        plt.plot(iteration, theBestResult)
         plt.draw()
         plt.pause(10E-200)
-    
-    populationNumber.append(number)
-    theBestResult.append(round(population[0].get_value(), 4))
+
     number += 1
+    
+
 

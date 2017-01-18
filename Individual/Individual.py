@@ -79,6 +79,10 @@ class Individual():
     def mutation(self):
         n = len(self.__arguments)
 
+        if n == 0:
+            self.set_value()
+            return
+
         xi = random.gauss(0, 1)
 
         tauPrime = 1 / math.sqrt(2 * n)
