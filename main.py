@@ -14,7 +14,12 @@ tournametSize = 10
 
 maximizing = input('Type in "min" to look for the minimum (any other input will result in looking for maximum): ')
 
-maxNumber = int(input('Type maximum number of population (default value 2000): ') or "2000")
+maxNumber = -1
+
+try:
+    maxNumber = int(input('Type maximum number of population. Value must be greater than 0 (default value 2000): '))
+except ValueError:
+    maxNumber = 2000    
 
 if maximizing == 'min':
     maximizing = False
