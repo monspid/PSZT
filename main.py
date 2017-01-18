@@ -17,7 +17,7 @@ maximizing = input('Type in "min" to look for the minimum (any other input will 
 maxNumber = -1
 
 try:
-    maxNumber = int(input('Type maximum number of population. Value must be greater than 0 (default value 2000): '))
+    maxNumber = int(input('Type maximum number of iterations. Value must be greater than 0 (default value 2000): '))
 except ValueError:
     maxNumber = 2000    
 
@@ -34,7 +34,7 @@ population = list()
 children = [None] * size
 
 for i in range(size):
-    for x in range(10000):    
+    for x in range(1000):    
         try:
             population.append(Individual(f))
             break
@@ -58,7 +58,7 @@ while(number < maxNumber and population[0].get_value() < 1E307 and population[0]
         a = random.randrange(size)
         b = random.randrange(size)
 
-        for x in range(10000):    
+        for x in range(1000):    
             try:
                 children[i] = Individual(population[a], population[b]) # crossing
                 children[i].mutation()
@@ -89,7 +89,6 @@ while(number < maxNumber and population[0].get_value() < 1E307 and population[0]
         population.append(winner)
         union.remove(winner)
 
-
     uber = population[0].get_value()
     
     if uber > 1E307:
@@ -108,7 +107,3 @@ while(number < maxNumber and population[0].get_value() < 1E307 and population[0]
         plt.pause(1E-200)
 
     number += 1
-    
-
-
-
