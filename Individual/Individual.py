@@ -31,7 +31,7 @@ class Individual():
         self.__arguments = tempDict.copy()
         self.__distributions = tempDict.copy()
         for x in self.__arguments.keys():
-            self.__arguments[x] = random.uniform(-100, 100)
+            self.__arguments[x] = random.range(-100, 100)
             self.__distributions[x] = random.uniform(25, 200)
 
     def get_arguments(self):

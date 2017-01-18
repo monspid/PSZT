@@ -29,7 +29,7 @@ population = list()
 children = [None] * size
 
 for i in range(size):
-    for x in range(100):    
+    for x in range(10000):    
         try:
             population.append(Individual(f))
             break
@@ -52,8 +52,17 @@ while(number < maxNumber and population[0].get_value() < 1E307 and population[0]
     for i in range(size):
         a = random.randrange(size)
         b = random.randrange(size)
-        children[i] = Individual(population[a], population[b]) # crossing
-        children[i].mutation()
+
+        for x in range(10000):    
+            try:
+                children[i] = Individual(population[a], population[b]) # crossing
+                children[i].mutation()
+                break
+            except (ZeroDivisionError, ValueError):
+                pass
+        else:
+            print("Correct Individual was not created")
+            sys.exit()
 
     union = population + children 
     population = list()
