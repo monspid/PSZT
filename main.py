@@ -96,7 +96,7 @@ while(number < maxNumber and population[0].get_value() < 1E307 and population[0]
     elif uber < -1E307:
         uber = -1E307
 
-    theBestResult.append(round(uber, 4))
+    theBestResult.append(round(uber, 3))
     iteration.append(number)
     
     print('number: {} \n{}'.format(number, population[0]))
