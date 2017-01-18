@@ -29,7 +29,11 @@ class Formula():
 		code = self.__formula
 		for key in self.__variables:
 			code = code.replace(key, str(varDict[key]))
-		return eval(code)
-
+		try:
+			result = eval(code)
+		except OverflowError: 
+			result = math.inf
+		return result
+		
 	def get_variables(self):
 		return self.__variables.copy()
