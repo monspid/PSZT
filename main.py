@@ -5,6 +5,7 @@ import math
 import matplotlib.pyplot as plt
 import operator
 import random
+import sys
 
 
 # Size of population
@@ -27,18 +28,27 @@ f = Formula(input('Formula: '))
 population = list()
 children = [None] * size
 
-for i in range(size):    
-    population.append(Individual(f))
-
+for i in range(size):
+    for x in range(100):    
+        try:
+            population.append(Individual(f))
+            break
+        except (ZeroDivisionError, ValueError):
+            pass
+    else:
+        print("Correct Individual was not created")
+        sys.exit()
 theBestResult = list()
 iteration = list()
 number = 0
 
+plt.close("all")
 plt.xlabel('Iteration')
 plt.ylabel('The best result')
+plt.xlim([0, maxNumber])
 plt.ion()
 
-while(number < maxNumber and population[0].get_value() != math.inf and population[0].get_value() != -(math.inf)):
+while(number < maxNumber and population[0].get_value() < 1E307 and population[0].get_value() > -1E307):
     for i in range(size):
         a = random.randrange(size)
         b = random.randrange(size)
@@ -68,10 +78,10 @@ while(number < maxNumber and population[0].get_value() != math.inf and populatio
 
     uber = population[0].get_value()
     
-    if uber == math.inf:
-        uber = 10E307
-    elif uber == -math.inf:
-        uber = -10E307
+    if uber > 1E307:
+        uber = 1E307
+    elif uber < -1E307:
+        uber = -1E307
 
     theBestResult.append(round(uber, 4))
     iteration.append(number)
@@ -81,9 +91,10 @@ while(number < maxNumber and population[0].get_value() != math.inf and populatio
     if(number % 10 == 0):
         plt.plot(iteration, theBestResult)
         plt.draw()
-        plt.pause(10E-200)
+        plt.pause(1E-200)
 
     number += 1
     
+
 
 
