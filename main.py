@@ -34,7 +34,7 @@ population = list()
 children = [None] * size
 
 for i in range(size):
-    for x in range(1000):    
+    for x in range(10000):    
         try:
             population.append(Individual(f))
             break
@@ -58,7 +58,7 @@ while(number < maxNumber and population[0].get_value() < 1E307 and population[0]
         a = random.randrange(size)
         b = random.randrange(size)
 
-        for x in range(1000):    
+        for x in range(10000):    
             try:
                 children[i] = Individual(population[a], population[b]) # crossing
                 children[i].mutation()
@@ -101,9 +101,13 @@ while(number < maxNumber and population[0].get_value() < 1E307 and population[0]
     
     print('number: {} \n{}'.format(number, population[0]))
 
-    if(number % 10 == 0):
+    if(number % 100 == 0):
         plt.plot(iteration, theBestResult)
         plt.draw()
         plt.pause(1E-200)
 
     number += 1
+
+plt.plot(iteration, theBestResult)
+plt.draw()
+plt.pause(1E-200)
